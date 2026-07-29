@@ -1,179 +1,138 @@
 # Arabic Voice Chatbot
 
-مشروع يحول كلام المستخدم إلى نص، ثم يولّد ردًا باستخدام نموذج لغوي، وبعد ذلك يحول الرد إلى صوت.
+## Overview
 
-## فكرة المشروع
+This project is an Arabic voice chatbot developed using Python. It records the user's voice, converts speech to text using OpenAI Whisper, generates a response using Cohere AI, and converts the generated response back into speech.
 
-يمر البرنامج بثلاث مراحل:
+## Features
 
-1. تسجيل صوت المستخدم من الميكروفون.
-2. تحويل الصوت إلى نص باستخدام Whisper.
-3. إرسال النص إلى Cohere لتوليد رد.
-4. تحويل الرد النصي إلى صوت عربي باستخدام gTTS.
-5. تشغيل الرد الصوتي للمستخدم.
+- Record voice from the microphone.
+- Convert speech to text using Whisper.
+- Generate intelligent responses using Cohere AI.
+- Convert text responses into speech.
+- Simple command-line interface.
 
-## الأدوات المستخدمة
+## Technologies Used
 
-- Python
+- Python 3.11
 - OpenAI Whisper
-- Cohere Chat API
+- Cohere API
 - gTTS
-- SoundDevice
 - Pygame
+- SoundDevice
+- NumPy
+- SciPy
+- python-dotenv
 
-## ملفات المشروع
+## Project Structure
 
-```text
+```
 voice_chatbot_task/
-├── main.py
-├── requirements.txt
-├── .env.example
-├── .gitignore
-└── README.md
+│── main.py
+│── requirements.txt
+│── README.md
+│── .gitignore
+│── .env.example
 ```
 
-## 1. تثبيت Python
+## Installation
 
-يفضل استخدام Python 3.11 لتقليل مشكلات التوافق.
+### 1. Clone the repository
 
-تأكد من التثبيت:
-
-```powershell
-py -3.11 --version
+```bash
+git clone https://github.com/Ahmed-AlBakhat/voice-chatbot-task.git
+cd voice-chatbot-task
 ```
 
-## 2. فتح مجلد المشروع
+### 2. Create a virtual environment
 
-```powershell
-cd "مسار\voice_chatbot_task"
+```bash
+python -m venv .venv
 ```
 
-مثال:
+Activate it:
 
-```powershell
-cd "$HOME\Downloads\voice_chatbot_task"
-```
+**Windows**
 
-## 3. إنشاء بيئة افتراضية
-
-```powershell
-py -3.11 -m venv .venv
-```
-
-تشغيل البيئة:
-
-```powershell
+```bash
 .venv\Scripts\activate
 ```
 
-## 4. تثبيت FFmpeg
+### 3. Install the required packages
 
-Whisper يحتاج إلى FFmpeg لمعالجة ملفات الصوت.
-
-بعد تثبيته، أغلق PowerShell وافتحه من جديد، ثم تحقق:
-
-```powershell
-ffmpeg -version
-```
-
-## 5. تثبيت المكتبات
-
-```powershell
-python -m pip install --upgrade pip
+```bash
 pip install -r requirements.txt
 ```
 
-## 6. إنشاء مفتاح Cohere
+### 4. Install FFmpeg
 
-أنشئ حسابًا في Cohere، ثم أنشئ API Key.
+Whisper requires FFmpeg to process audio files.
 
-انسخ ملف المثال:
+Verify the installation:
 
-```powershell
-copy .env.example .env
+```bash
+ffmpeg -version
 ```
 
-افتح ملف `.env` واكتب:
+### 5. Configure the API Key
+
+Create a `.env` file and add your Cohere API key:
 
 ```env
-COHERE_API_KEY=ضع_المفتاح_الحقيقي_هنا
+COHERE_API_KEY=YOUR_API_KEY
 ```
 
-لا ترفع ملف `.env` إلى GitHub، لأنه يحتوي على المفتاح السري.
+## Running the Project
 
-## 7. تشغيل المشروع
-
-```powershell
+```bash
 python main.py
 ```
 
-عند ظهور الرسالة:
+After the program starts:
+
+1. Press **Enter** to begin recording.
+2. Speak for approximately 8 seconds.
+3. The application will:
+   - Convert your speech to text.
+   - Generate an AI response.
+   - Convert the response into speech.
+
+To exit the program, type:
 
 ```text
-اضغط Enter لبدء التسجيل، أو اكتب q ثم Enter للخروج.
+q
 ```
 
-اضغط Enter وتكلم لمدة 8 ثوانٍ. سيقوم البرنامج بعرض كلامك نصيًا، ثم يعرض رد النموذج ويشغله صوتيًا.
+and press **Enter**.
 
-## تعديل مدة التسجيل
+## Workflow
 
-في ملف `main.py` غيّر:
-
-```python
-RECORD_SECONDS = 8
 ```
-
-مثلاً إلى:
-
-```python
-RECORD_SECONDS = 12
-```
-
-## تعديل نموذج Whisper
-
-النموذج الحالي:
-
-```python
-WHISPER_MODEL = "base"
-```
-
-يمكن استخدام `tiny` لتشغيل أسرع، أو `small` لدقة أعلى، لكن النموذج الأكبر يحتاج وقتًا وذاكرة أكثر.
-
-## طريقة رفع المشروع على GitHub
-
-بعد إنشاء مستودع جديد وفارغ في GitHub، نفّذ:
-
-```powershell
-git init
-git add .
-git commit -m "Add Arabic voice chatbot project"
-git branch -M main
-git remote add origin رابط_المستودع
-git push -u origin main
-```
-
-## سير عمل البرنامج
-
-```text
 Microphone
-   ↓
-WAV audio
-   ↓
-Whisper (Speech to Text)
-   ↓
-Cohere LLM (Generate Response)
-   ↓
-gTTS (Text to Speech)
-   ↓
-MP3 spoken response
+      │
+      ▼
+Speech Recording
+      │
+      ▼
+OpenAI Whisper
+(Speech-to-Text)
+      │
+      ▼
+Cohere AI
+(Response Generation)
+      │
+      ▼
+Text-to-Speech
+      │
+      ▼
+Audio Response
 ```
 
-## ملاحظات
+## Notes
 
-- يحتاج Cohere وgTTS إلى اتصال بالإنترنت.
-- يعمل Whisper محليًا بعد تنزيل النموذج أول مرة.
-- يجب السماح لـ Python باستخدام الميكروفون من إعدادات Windows.
-- لا تشارك مفتاح API ولا تضعه مباشرة داخل `main.py`.
+- An internet connection is required for Cohere and gTTS.
+- FFmpeg must be installed before running Whisper.
+- Do not upload your `.env` file because it contains your private API key.
 
 ## Author
 
